@@ -1,0 +1,51 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#__next
+{
+  width: 100%; 
+  height: 100vh;
+}
+
+.node {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.5rem;
+}
+
+.badge {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+}
+
+.healthy {
+    background: green;
+}
+
+.degrated {
+  background: orange;
+}
+
+.unhealthy {
+  background: crimson;
+}
+
+.unknown {
+  background: grey;
+}
