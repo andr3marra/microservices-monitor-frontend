@@ -1,9 +1,5 @@
 export type TStatusType =  "healthy" | "unhealthy" | "degrated" | null
 
-interface IPosition {
-    x: number,
-    y: number
-}
 
 export interface IEdgeResponse {
     target: string,
