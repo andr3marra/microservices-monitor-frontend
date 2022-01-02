@@ -10,9 +10,11 @@ export function formatServiceStatus(data: IStatusResponse[]) {
 
     // Getting target Nodes
     data.map((element) => {
-        element.edges.map(edge => {
-            targetNodeIds.add(edge.target)
-        })
+        if(element.edges){
+            element.edges.map(edge => {
+                targetNodeIds.add(edge.target)
+            })
+        }
     })
 
     // Constructing FlowElements
@@ -51,34 +53,36 @@ function constructNodes(element: IStatusResponse, formattedData: FlowElement[], 
 }
 
 function constructEdges(element: IStatusResponse, formattedData: FlowElement[]) {
-    element.edges.map(edge => {
-        let edgeElement = {} as Edge;
-
-        edgeElement.id = element.id + edge.target;
-        edgeElement.source = element.id;
-        edgeElement.target = edge.target;
-        edgeElement.label = edge.status;
-        edgeElement.type = "bezier";
-        edgeElement.animated = edge.status !== "healthy";
-        edgeElement.labelStyle = { fill: '#f6ab6c', fontWeight: 700 };
-        edgeElement.style = { stroke: '#f6ab6c' };
-
-        formattedData.push(edgeElement);
-
-        let edgeExists = formattedData.find(element => element.id === edge.target)
-
-        // Construct Node if it does not exists
-        if (!edgeExists) {
-            let newNode = {} as Node;
-
-            newNode.id = edge.target;
-            newNode.data = {
-                label: <Label title={edge.target} />
-            };
-            newNode.type = "output"
-
-            formattedData.push(newNode);
-        }
-    })
+    if(element.edges){
+        element.edges.map(edge => {
+            let edgeElement = {} as Edge;
+    
+            edgeElement.id = element.id + edge.target;
+            edgeElement.source = element.id;
+            edgeElement.target = edge.target;
+            edgeElement.label = edge.status;
+            edgeElement.type = "bezier";
+            edgeElement.animated = edge.status !== "healthy";
+            edgeElement.labelStyle = { fill: '#f6ab6c', fontWeight: 700 };
+            edgeElement.style = { stroke: '#f6ab6c' };
+    
+            formattedData.push(edgeElement);
+    
+            let edgeExists = formattedData.find(element => element.id === edge.target)
+    
+            // Construct Node if it does not exists
+            if (!edgeExists) {
+                let newNode = {} as Node;
+    
+                newNode.id = edge.target;
+                newNode.data = {
+                    label: <Label title={edge.target} />
+                };
+                newNode.type = "output"
+    
+                formattedData.push(newNode);
+            }
+        })
+    }
 }
 

@@ -32,7 +32,7 @@ const Flowchart = () => {
 
     useEffect(() => {
         async function getData() {
-            const {data} = await api.get<IStatusResponse[]>("/status"); 
+            const {data} = await api.get<IStatusResponse[]>("/ServiceInformation"); 
             const formattedData = formatServiceStatus(data);
             console.log(formattedData)
 
@@ -154,7 +154,7 @@ const Flowchart = () => {
                 onClick={handleHealthCheck}
                 style={{ position: 'absolute', right: 10, top: 90, zIndex: 4 }}
             >
-               Refresh
+               Refre
             </button>
         </ReactFlow>
     );
