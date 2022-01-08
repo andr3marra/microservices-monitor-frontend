@@ -1,6 +1,7 @@
 import { Label } from "components/Flowchart/Label"
 import { IStatusResponse, IEdgeResponse } from "models/Flowchart"
 import { FlowElement, Node, Edge } from 'react-flow-renderer'
+import { v4 as uuidv4 } from 'uuid';
 
 export function formatServiceStatus(data: IStatusResponse[]) {
 
@@ -12,7 +13,12 @@ export function formatServiceStatus(data: IStatusResponse[]) {
     data.map((element) => {
         if(element.edges){
             element.edges.map(edge => {
-                targetNodeIds.add(edge.target)
+                if(edge.targetId){
+                    targetNodeIds.add(edge.targetId)
+                }else{
+                    edge.targetId = uuidv4()
+                    targetNodeIds.add(edge.targetId)
+                }
             })
         }
     })
@@ -57,9 +63,10 @@ function constructEdges(element: IStatusResponse, formattedData: FlowElement[]) 
         element.edges.map(edge => {
             let edgeElement = {} as Edge;
     
-            edgeElement.id = element.id + edge.target;
+            edgeElement.id = edge.id;
             edgeElement.source = element.id;
-            edgeElement.target = edge.target;
+            console.log(edge.targetId);
+            edgeElement.target = edge.targetId;
             edgeElement.label = edge.status;
             edgeElement.type = "bezier";
             edgeElement.animated = edge.status !== "healthy";
@@ -68,15 +75,15 @@ function constructEdges(element: IStatusResponse, formattedData: FlowElement[]) 
     
             formattedData.push(edgeElement);
     
-            let edgeExists = formattedData.find(element => element.id === edge.target)
+            let nodeExists = formattedData.find(element => element.className === "Node" && element.id === edge.id)
     
             // Construct Node if it does not exists
-            if (!edgeExists) {
+            if (!nodeExists) {
                 let newNode = {} as Node;
     
-                newNode.id = edge.target;
+                newNode.id = edge.targetId;
                 newNode.data = {
-                    label: <Label title={edge.target} />
+                    label: <Label title={edge.targetId} />
                 };
                 newNode.type = "output"
     

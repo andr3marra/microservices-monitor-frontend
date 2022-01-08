@@ -2,7 +2,8 @@ export type TStatusType =  "healthy" | "unhealthy" | "degrated" | null
 
 
 export interface IEdgeResponse {
-    target: string,
+    id: string
+    targetId: string,
     status: TStatusType
 }
 
